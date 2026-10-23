@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import '../config/app_settings.dart';
+import '../config/app_version.dart';
 
 class ConfiguracionesScreen extends StatelessWidget {
   const ConfiguracionesScreen({super.key});
@@ -68,6 +69,8 @@ class ConfiguracionesScreen extends StatelessWidget {
               style: TextStyle(fontSize: 13, color: Colors.grey),
             ),
           ),
+          // Versión de la app (se cambia en lib/config/app_version.dart)
+          const VersionLabel(),
         ],
       ),
     );
