@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 
-const String versionApp = 'v1.0.1 - 23/10/2026';
+const String versionApp = 'v1.0.2 - 23/10/2026';
 
 /// Texto pequeño y centrado que muestra la version de la app.
 /// Para usarlo en una pantalla basta con escribir: const VersionLabel()
