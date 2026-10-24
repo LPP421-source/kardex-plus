@@ -9,7 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/app_settings.dart';
 import 'config/supabase_config.dart';
-import 'screens/lista_ejercicios_screen.dart';
+import 'screens/auth_gate.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       theme: AppTheme.themeData,
-      home: const ListaEjerciciosScreen(),
+      home: const AuthGate(),
     );
   }
 }

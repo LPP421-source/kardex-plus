@@ -4,6 +4,7 @@
 // ejercicios guardados en Supabase, con opción de crear uno nuevo.
 
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/ejercicio.dart';
 import '../services/ejercicio_service.dart';
 import 'configuraciones_screen.dart';
@@ -91,12 +92,60 @@ class _ListaEjerciciosScreenState extends State<ListaEjerciciosScreen> {
     }
   }
 
+  Future<void> _cerrarSesion() async {
+    final confirmado = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('¿Cerrar sesión?'),
+        content: const Text('Tendrás que volver a iniciar sesión con Google.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Cerrar sesión'),
+          ),
+        ],
+      ),
+    );
+    if (confirmado != true) return;
+    await Supabase.instance.client.auth.signOut();
+    // No hace falta navegar: AuthGate detecta que ya no hay sesión
+    // y muestra la pantalla de login automáticamente.
+  }
+
   @override
   Widget build(BuildContext context) {
+    final correo = Supabase.instance.client.auth.currentUser?.email;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mis Ejercicios'),
         actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.account_circle_outlined),
+            tooltip: 'Cuenta',
+            onSelected: (valor) {
+              if (valor == 'salir') _cerrarSesion();
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem<String>(
+                enabled: false,
+                child: Text(correo ?? 'Sesión iniciada'),
+              ),
+              const PopupMenuDivider(),
+              const PopupMenuItem<String>(
+                value: 'salir',
+                child: ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Cerrar sesión'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ],
+          ),
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             tooltip: 'Configuraciones',
